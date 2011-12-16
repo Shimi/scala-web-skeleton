@@ -1,0 +1,44 @@
+h1. Scala sbt web project skeleton
+
+h2. Introduction
+
+I have been asked many times by people about how to create a Scala web project and integrate it with ScalaIDE. So I decided to create this skeleton project that everyone can use.
+This project uses "sbt":https://github.com/harrah/xsbt as the build tool.
+
+h2. Usage:
+
+h3. Source directories
+
+The first time you will need to create the source directories
+<pre>
+$ sbt src
+</pre>
+
+h3. Dependencies
+
+Dependencies are managed by SBT. The project comes with a few default dependencies that can be removed.
+<pre>
+libraryDependencies ++= Seq("org.slf4j" % "slf4j-api" % "1.6.2" % "runtime" withSources,
+	"ch.qos.logback" % "logback-classic" % "0.9.30",
+	"javax.servlet" % "servlet-api" % "2.5" % "provided",
+	"org.eclipse.jetty" % "jetty-webapp" % "8.0.4.v20111024" % "container")
+</pre>
+
+The jetty-webapp dependency is required by the sbt web plugin in order to run integration tests with embedded jetty. The servlet-api is required for compilation. Using the key "provided will not package it since it already bundled in our runtime web server.
+
+h3. eclipse integration
+
+The project comes with the sbteclipse plugin.
+Every time the dependencies change, we need to tell eclipse about it.
+<pre>
+$ sbt eclipse with-sources same-targets
+</pre>
+
+This command updates the eclipse configuration files. After we run it we need to refresh the project from within eclipse.
+
+h3. Packaging
+
+Since this is a web project running the package task will create a war file that can be deployed on every servlet container.
+<pre>
+$ sbt package
+</pre>
